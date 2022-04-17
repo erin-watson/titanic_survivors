@@ -50,11 +50,8 @@ print("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
 print("FEATURE IMPORTANCES FEATURE IMPORTANCES FEATURE IMPORTANCES")
 importances = rf.feature_importances_
 print(importances)
-#Important features were identified as 'PassengerId', 'Pclass', 'Name', 'Sex',
-#'Age', 'SibSp', 'Parch','Ticket', 'Fare', 'Cabin', 'Embarked'.
-#Of those, SibSp seems unusual. it is likely this is linked to wealth such as
-# having many siblings/ be maried making it more or less likely for you to be
-# from a wealthy family.
+# 6/7 of the remaining features were chosen as important.
+# how do i find out which ones they are.
 
 print(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,")
 print("NOW WE PREPARE THE TEST DATA")
