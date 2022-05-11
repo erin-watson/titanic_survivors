@@ -3,7 +3,10 @@
 
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-
+from sklearn.model_selection import train_test_split
+#####################################################
+# DATA PREP
+#####################################################
 df = pd.read_csv("train.csv")
 
 print(df.columns)
@@ -32,9 +35,14 @@ print(df.columns)
 
 df = df.dropna()
 
-answers = df['Survived']
+training_data, val_data = train_test_split(df, test_size=0.2, random_state=25)
 
-features = df.drop(['Survived'], axis=1)
+
+###################################################
+
+answers = training_data['Survived']
+
+features = training_data.drop(['Survived'], axis=1)
 
 print(answers)
 print(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,")
@@ -54,26 +62,18 @@ print(importances)
 # how do i find out which ones they are.
 
 print(",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,")
-print("NOW WE PREPARE THE TEST DATA")
-df = pd.read_csv("test.csv")
-
-print(df.columns)
-
-for column in df.columns:
-    print(df[column])
+print("preparation of Validation data")
 
 
-for column in df.columns:
-    if df[column].dtype == "object":
-        print(df[column])
-        del df[column]
+val_answers = val_data['Survived']
 
-print(df.columns)
+val_features = val_data.drop(['Survived'], axis=1)
 
 
-df = df.dropna()
-
-test_features = df
-
-predict = rf.predict(test_features)
+predict = rf.predict(val_features)
 print(predict)
+
+print(val_answers.values)
+
+from sklearn.metrics import accuracy_score
+print("accuracy_score: ", accuracy_score(val_answers, predict))
