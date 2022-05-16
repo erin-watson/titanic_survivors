@@ -18,13 +18,19 @@ for column in df.columns:
 print(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,')
 
 
-
+# Change Sex to binary data
 import numpy as np
 df['Sex'] = np.where(df['Sex'] == 'male', 1, 0)
 
 
 
+pd.set_option("display.max_rows", None, "display.max_columns", None)
+#print(df)
 
+df["Traveled with"] = df["Parch"] + df["SibSp"]
+
+del df['Parch']
+del df['SibSp']
 
 # some columns are not numbers and therefore are difficult to use.
 # I will now identify these columns and remove them from the dataset.
@@ -40,12 +46,12 @@ del df['PassengerId']
 print(df.columns)
 
 print('THE FOLLOWING DATA HAS HAD THE OBJECT COLUMN TYPES REMOVED')
-# all non numeric datatypes should now be removed.
+# all non numeric datatypes (and Passenger ID) should now be removed.
 
 
 
 
-
+# Check for NaN values and replace them with the mode of the data for each column.
 for column in df.columns:
     print(df[column].isna().sum())
     df[column].fillna(df[column].mode()[0], inplace=True)
@@ -53,16 +59,21 @@ for column in df.columns:
     print(df[column].isna().sum())
 
 
-
-
-
-
 df = df.dropna()
 
+
+
+
+
+# Creating a training and validation dataset
 training_data, val_data = train_test_split(df, test_size=0.2, random_state=25)
 
+#############################################################################
 
-###################################################
+
+
+
+
 
 answers = training_data['Survived']
 
