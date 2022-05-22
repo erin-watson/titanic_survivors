@@ -4,45 +4,45 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-#####################################################
+import numpy as np
+from sklearn.metrics import accuracy_score
+###################################################################
 # DATA PREP
-#####################################################
+###################################################################
 df = pd.read_csv('train.csv')
 
-print(df.columns)
 
 for column in df.columns:
     print(df[column])
 
 
-print(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,')
 
 
 # Change Sex to binary data
-import numpy as np
 df['Sex'] = np.where(df['Sex'] == 'male', 1, 0)
 
 
 
-pd.set_option("display.max_rows", None, "display.max_columns", None)
-#print(df)
 
+#Created a new column with the combined Parch and SibSp data
 df["Traveled with"] = df["Parch"] + df["SibSp"]
 
 del df['Parch']
 del df['SibSp']
 
-# some columns are not numbers and therefore are difficult to use.
-# I will now identify these columns and remove them from the dataset.
+
+
+# The remaining Object columns have been deemed not important and will now be
+# removed.
 
 for column in df.columns:
     if df[column].dtype == 'object':
         print(df[column])
         del df[column]
 
-
-
 del df['PassengerId']
+
+
 print(df.columns)
 
 print('THE FOLLOWING DATA HAS HAD THE OBJECT COLUMN TYPES REMOVED')
@@ -93,8 +93,11 @@ print(''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 print('FEATURE IMPORTANCES FEATURE IMPORTANCES FEATURE IMPORTANCES')
 importances = rf.feature_importances_
 print(importances)
-# 6/7 of the remaining features were chosen as important.
-# how do i find out which ones they are.
+
+# Class, Sex, Age, Fare and Traveled with have been used to train the model.
+# Of those 5, fare was found to have been most important by the model followed
+# by sex and age.
+
 
 print(',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,')
 print('preparation of Validation data')
@@ -110,5 +113,5 @@ print(predict)
 
 print(val_answers.values)
 
-from sklearn.metrics import accuracy_score
 print('accuracy_score: ', accuracy_score(val_answers, predict))
+# Model predicts survival at 79% accracy.
